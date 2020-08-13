@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	
+		
+		<link rel="stylesheet" type="text/css" href="style1.css"></link>
+		<script type="text/javascript" src="data.json"></script>
+		<script type="text/javascript" src="script1.js"></script>
+		<script type="text/javascript" src="script2.js"></script>
+		<link rel="stylesheet" type="text/css" href="style2.css"></link>
+		<script>
+			var premium;
+			var count=0, age, name, sum, period, cb, hcw;
+			var input = [];
+			
+			function addRow() {
+			
+				count++;
+				if(count>=8)
+					document.getElementById("add").disabled = true;
+				
+				hcw= document.getElementById("HCW");
+				cb = document.getElementById("opt");	
+				var check=0;
+				sum = document.getElementById("sum").value; 
+				var list = document.getElementsByName("period");   
+				for(var i = 0; i < list.length; i++) { 
+					if(list[i].checked) 
+					{
+						check=1;
+						period = list[i].value; 
+					}
+				} 
+				if(check==0){
+					alert("Please select policy period");
+					return;
+				}
+				if(sum=="-Select-"){
+					alert("Please select the sum insured");
+					return;
+				}
+					
+				name = document.getElementById("name").value;
+				age = document.getElementById("age").value;
+				if(name=="" || age=="") {
+					alert("Please enter name and age");
+					return;
+				}
+					
+				document.getElementById("name").value = '';
+				document.getElementById("age").value = '';
+			//	document.getElementById("HCW").checked = false;
+				if(age<0 || age>65){
+					alert("Entered age is above 65");
+					return;
+				}
+				else {
+					var table = document.getElementById("myTableData");
+					
+					var inData = {};
+					inData.age = age;
+					inData.name = name;
+					if(hcw.checked==true)
+						inData.hcwork = "Yes";
+					else 
+						inData.hcwork = "No";
+					input.push(inData);
+					var rowCount = table.rows.length;
+					var row = table.insertRow(rowCount);
+
+					row.insertCell(0).innerHTML= '<input type="button" id="delete" value = "Delete" onClick="Javacsript:deleteRow(this, \''+name+'\' )">';
+					if(hcw.checked==true)
+						row.insertCell(1).innerHTML= name + "<h6>(Health Care worker)</h6>";
+					else
+						row.insertCell(1).innerHTML= name;
+					row.insertCell(2).innerHTML= age;
+				}
+			}
+
+			function deleteRow(obj, inp) {
+				 count--;
+				 console.log(inp);
+				
+				for (var j =0; j < input.length; j++){
+				   if (input[j].name === inp) {
+					  input.splice(j,1);
+					 break;
+				   } 
+				 }			
+				var index = obj.parentNode.parentNode.rowIndex;
+				var table = document.getElementById("myTableData");
+				table.deleteRow(index);
+			   
+			}
+			function compute(gn_age)
+			{
+				if(gn_age > 0 && gn_age <= 45)
+					age = "0-45";
+				else if (gn_age > 45 && gn_age <= 65)
+					age = "45-65";
+				for(var j=0; j<data.length; j++) {
+					if(data[j].period == period)
+					{
+						for(var k=0; k<2; k++) {
+							if(data[j].age_value[k].age == age)
+							premium = data[j].age_value[k].values[sum];
+						}
+					}
+				}
+				return premium;
+				
+			}
+			
+			function Optional(gn_age)
+			{
+				if(gn_age > 0 && gn_age <= 45)
+					age = "0-45";
+				else if (gn_age > 45 && gn_age <= 65)
+					age = "45-65";
+				for(var j=0; j<Opt_data.length; j++) {
+					if(Opt_data[j].period == period)
+					{
+						for(var k=0; k<2; k++) {
+							if(Opt_data[j].age_value[k].age == age)
+							premium = Opt_data[j].age_value[k].values[sum];
+						}
+					}
+				}
+				return premium;
+			}
+			
+			
+			function addTable() {
+			
+			var total =0, finalOpt=0;
+			document.getElementById("create").disabled = true;
+			document.getElementById("add").disabled = true;
+			document.getElementById("sum").disabled = true;
+		/*	if(opt.checked==true)
+				document.getElementById("opt").disabled = true;
+			if(hcw.checked==true)
+				document.getElementById("hcw").disabled = true; */
+			document.getElementById("opt").disabled = true;
+			document.getElementById("HCW").disabled = true;
+			
+			var periodRadio = document.querySelectorAll('[name="period"]');
+			for (var i = 0; i < periodRadio.length; i++){
+			  periodRadio[i].disabled = true;
+			}
+			
+			var delButtons = document.querySelectorAll('[id="delete"]');
+			for (var i = 0; i < delButtons.length; i++){
+			  delButtons[i].disabled = true;
+			}
+			
+			input.sort(function(a, b) {
+				return b.age - a.age;
+			});
+			var myJSON = JSON.stringify(input);
+			//alert(myJSON);
+			var myTableDiv = document.getElementById("myDynamicTable"); 
+			var col = [];
+			for (var i = 0; i < input.length; i++) {
+				for (var key in input[i]) {
+					if (col.indexOf(key) === -1) {
+						col.push(key);
+					}
+				}
+			}
+			if (cb.checked == true)
+				var totColumn= col.length + 3;
+			else 
+				var totColumn= col.length + 2;
+			if(input.length == 1)
+				totColumn--;
+			var table = document.createElement('TABLE');
+			table.setAttribute("id", "DynTable");
+			table.setAttribute("class", "w3-table-all w3-card-4");
+			table.border='1';
+		    var tr = table.insertRow(-1); 
+			
+			 for (var i = 0; i < totColumn; i++) {
+				var th = document.createElement("th");
+				th.setAttribute("id", "header");
+				th.innerHTML = col[i];
+				if(i==col.length-1)
+					th.innerHTML = "Health care worker (yes/no)" ;
+				else if(i==col.length)
+					th.innerHTML = "Premium" ;
+				else if(i==col.length+1){
+					if(input.length == 1 && cb.checked == true)
+						th.innerHTML = "Optional cover" ; 
+					else
+						th.innerHTML = "Premium after discount"; 
+				}
+				else if(i==col.length+2)
+					th.innerHTML = "Optional cover" ; 
+					
+				tr.appendChild(th); 
+			}
+
+			for (var i = 0; i < input.length; i++) {
+
+				tr = table.insertRow(-1);
+
+				for (var j = 0; j < totColumn; j++) {
+					var tabCell = tr.insertCell(-1);
+					tabCell.innerHTML = input[i][col[j]];
+					var pre= compute(input[i].age);
+					if(j==col.length) {
+						if(input[i].hcwork == true)
+								pre = pre*(1-0.05);
+						if(input.length == 1){
+							total=pre;
+							finalPre=pre;
+						}
+						tabCell.innerHTML = pre;
+					}
+						
+					else if(j==col.length+1) {
+						var finalPre;
+						if(!(input.length == 1 && cb.checked == true)) {
+							if(i==1) {
+								if(input[i].hcwork == true)
+									finalPre = pre*(1-0.25);
+								else
+									finalPre = pre*(1-0.20);
+							}
+							else if(i==2){
+								if(input[i].hcwork == true)
+									finalPre = pre*(1-0.35);
+								else
+									finalPre = pre*(1-0.30);
+							}
+							else if(i>=3){
+								if(input[i].hcwork == true)
+									finalPre = pre*(1-0.45);
+								else
+									finalPre = pre*(1-0.40);
+							}
+							else{
+								if(input[i].hcwork == true)
+									finalPre = pre*(1-0.05);
+								else
+									finalPre = pre;
+							}
+							//if(hcw.checked == true)
+							//	finalPre = finalPre*(1-0.05);
+							total += finalPre;
+							tabCell.innerHTML = Math.round(finalPre);
+						}
+						else {
+							
+							var optCover = Optional(input[i].age);
+							//console.log(optCover);
+							if(i==1) {
+								if(input[i].hcwork == true)
+									optCover = (optCover*(1-0.25)) + finalPre;
+								else
+									optCover = (optCover*(1-0.20)) + finalPre;
+							}
+							else if(i==2){
+								if(input[i].hcwork == true)
+									optCover = (optCover*(1-0.35)) + finalPre;
+								else
+									optCover = (optCover*(1-0.30)) + finalPre;
+							}
+							else if(i>=3){
+								if(input[i].hcwork == true)
+									optCover = (optCover*(1-0.45)) + finalPre;
+								else
+									optCover = (optCover*(1-0.40)) + finalPre;
+							}
+							else{
+								if(input[i].hcwork == true)
+									optCover = (optCover*(1-0.05)) + finalPre;
+								else
+									optCover = optCover  + finalPre;
+							}
+							console.log(optCover);
+						//	if(hcw.checked == true)
+						//		optCover = optCover*(1-0.05);
+							finalOpt += optCover;
+							tabCell.innerHTML = Math.round(optCover);
+						}
+					}
+					else if(j==col.length+2)
+					{
+						/*var optCover = Optional(input[i].age);
+						if(i==1)
+							optCover = (optCover*(1-0.20)) + finalPre;
+						else if(i==2)
+							optCover = (optCover*(1-0.30))  + finalPre;
+						else if(i>=3)
+							optCover = (optCover*(1-0.40))  + finalPre;
+						else
+							optCover = optCover  + finalPre;
+						if(hcw.checked == true)
+							optCover = optCover*(1-0.05);
+						finalOpt += optCover;
+						tabCell.innerHTML = Math.round(optCover);
+						*/
+						
+						var optCover = Optional(input[i].age);
+							//console.log(optCover);
+							if(i==1) {
+							//alert(hcw.checked);
+								if(input[i].hcwork == true)
+									optCover = (optCover*(1-0.25)) + finalPre;
+									
+								else
+									optCover = (optCover*(1-0.20)) + finalPre;
+							}
+							else if(i==2){
+								if(input[i].hcwork == true)
+									optCover = (optCover*(1-0.35)) + finalPre;
+								else
+									optCover = (optCover*(1-0.30)) + finalPre;
+							}
+							else if(i>=3){
+								if(input[i].hcwork == true)
+									optCover = (optCover*(1-0.45)) + finalPre;
+								else
+									optCover = (optCover*(1-0.40)) + finalPre;
+							}
+							else{
+								if(input[i].hcwork == true)
+									optCover = (optCover*(1-0.05)) + finalPre;
+								else
+									optCover = optCover  + finalPre;
+							}
+							console.log(optCover);
+						//	if(hcw.checked == true)
+						//		optCover = optCover*(1-0.05);
+							finalOpt += optCover;
+							tabCell.innerHTML = Math.round(optCover);
+						
+					}
+				}
+				
+				
+				myTableDiv.appendChild(table);
+				
+			}
+		document.getElementById("output").innerHTML = "Total premium (including tax) : " + Math.round(total);
+			if(cb.checked == true)
+				document.getElementById("output2").innerHTML = "Premium with optional cover : " + Math.round(finalOpt);
+		}
+
+
+		</script>
+	</head>
+	<body>
+		<h1 style="color:white;"> STAR HEALTH INSURANCE </h1>
+		<h2 style="color:white;"> CORONA KAVACH </h2> <hr>
+	    <div class="float-child">
+			<h3>Select policy period (in months): </h3>
+			
+			<div class="form-check form-check-inline sum" style="color:#DCDCDC;">
+			  <input class="form-check-input" type="radio" name="period" value="3.5"> 3.5 </input>  
+				
+			  <input class="form-check-input" type="radio" name="period" value="6.5"> 6.5 </input> 
+			
+			  <input class="form-check-input" type="radio" name="period" value="9.5"> 9.5 </input>
+			</div>
+			<br><br>
+			<hr>
+			<form>
+			  <h3 class="o" style="align:left">Sum insured (in lakhs):</h3>
+			  <br>
+			  <select id="sum" class="sum">
+				<option>-Select-</option>
+				<option value="0.5">0.5</option>
+				<option value="1">1</option>
+				<option value="1.5">1.5</option>
+				<option value="2">2</option>
+				<option value="2.5">2.5</option>
+				<option value="3">3</option>
+				<option value="3.5">3.5</option>
+				<option value="4">4</option>
+				<option value="4.5">4.5</option>
+				<option value="5">5</option>
+			  </select>
+			</form>
+			<br><br>
+			<hr>
+			<h3 class="o" style="align:left"> Optional Cover:&nbsp;&nbsp;&nbsp; </h3> <input type="checkbox" id="opt" class="optCheck" > </input>
+			<br><hr>
+			<h3> Add or delete members </h3>
+			<div id="myform">
+				<h3 style="color:white;"> Name: </h3> <input type="text" id="name" autocomplete="off" > </input> <br>
+				<h3 style="color:white;">Age: </h3> <input type="text" id="age" autocomplete="off" > </input>
+				 <input type="button" class="button5" id="add" value="Add" onclick=" addRow();"></input>
+				 <br><input type="checkbox" id="HCW" class="HCW"> <h3 class="o" style="color:white;"> Health care worker </h3></input>
+			</div>
+		</div>
+	<br>
+	<br>
+	
+	<div id="mydata">
+		<table id="myTableData"  border="1" cellpadding="2">
+			<tr>
+				<td>&nbsp;&nbsp;&nbsp;</td>
+				<td><b style="color:white;">Name</b></td>
+				<td><b style="color:white;">Age</b></td>
+			</tr>
+		</table>
+		<br><br>
+	</div>
+	<div class="res">
+		<div id="myDynamicTable">
+			<h3 class="o" id="heading" style="color:white;"> To display Premium for all members </h3> <input type="button" class="button5" id="create" value="Click here" onclick="Javascript:addTable()">
+			<br>
+		</div>
+		<div id="output"> </div>
+		<div id="output2"> </div>
+	</div> 
+	</body>
+</html>

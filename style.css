@@ -1,0 +1,107 @@
+/*body {
+  font-size: 14px;
+  margin: 40px;
+}		
+*/
+.button5 {
+  background-color: #555555;
+  color: white;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 100px;
+  border: 2px solid #555555;
+}
+
+.button5:hover {
+  background-color: grey;
+  color: white;
+  border: 2px solid grey;
+}
+
+#delete {
+  background-color: grey;
+  color: white;
+  border: 2px solid grey;
+}
+
+.float-child {
+    width: 50%;
+    padding: 20px;
+    border: 2px solid grey;
+}  
+
+#output, #output2 {
+  font-size: 17px;
+  color: #002b80;
+}
+
+h3{
+  font-size: 16px;
+}
+
+h3.o {
+  display: inline-block;
+}
+
+input.optCheck { 
+            width: 25px; 
+            height: 25px; 
+} 
+
+.sum {
+  float: left;
+  width: 250px;
+  border: 1px solid grey;
+  padding: 10px;
+}
+
+table, td, th {  
+  border: 2px solid #ddd;
+  text-align: center;
+  color: #333333;
+}
+
+table {
+  border-collapse: collapse;
+  width: 60%;
+}
+
+th, td {
+  padding: 10px;
+}
+
+#myTableData {
+  table-layout: auto;
+   width: 30%;
+}
+
+#DynTable {
+	color:#669;
+	border-top: 1px solid #fff;
+	background-color: #e8edff;
+	padding: 8px;
+	width: 100%;
+	
+}
+
+#header {
+	background-color: #b9c9fe;
+	border-top: 2px solid #d3ddff;
+    border-bottom: 1px solid #fff;
+    color: #039;
+    padding: 8px;
+	font-weight: normal;
+}
+
+#myDynamicTable {
+		padding-bottom: 50px;
+}
+
+#mydata {
+	position: relative;
+}
+
+.res {
+	position: relative;
+}

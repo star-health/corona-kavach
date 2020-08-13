@@ -1,0 +1,157 @@
+html {
+  height: 100%;
+}
+body {
+  margin:0;
+  padding:50px;
+  font-family: sans-serif;
+  background-image: linear-gradient(-90deg,#9ec0fa,#0d61f2);  
+ }
+
+.button5 {
+  background-color: #F5F5F5;
+  color:#0d61f2;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 100px;
+  border: 1px solid #F5F5F5;
+}
+
+.button5:hover {
+  background-color: #E0E0E0;
+  color:#0d61f2;
+  border: 1px solid #E0E0E0;
+}
+
+#delete {
+  background-color: #F5F5F5;
+  color:#0d61f2;
+  border: 1px solid #F5F5F5;
+}
+
+.float-child {
+    width: 50%;
+    padding: 20px;
+    border: 2px solid #F5F5F5;
+}  
+
+#output, #output2 {
+  font-size: 17px;
+  color: white;
+}
+
+h3{
+  font-size: 16px;
+  color:#F5F5F5;
+}
+
+h3.o {
+  display: inline-block;
+}
+
+input.optCheck { 
+            width: 25px; 
+            height: 25px; 
+} 
+
+.sum {
+  float: left;
+  width: 250px;
+  border: 1px solid #F5F5F5;
+  padding: 10px;
+}
+
+table, td, th {  
+  border: 2px solid #F5F5F5;
+  text-align: center;
+  color:white;
+}
+
+table {
+  border-collapse: collapse;
+  width: 60%;
+}
+
+th, td {
+  padding: 10px;
+}
+
+#DynTable td, #DynTable th {
+    border:1px solid #0d61f2;
+	color: #0d61f2;
+}
+
+#myTableData {
+  table-layout: auto;
+  width: 30%;
+}
+
+#DynTable {
+	background-color:white;
+	color:#0d61f2;
+	border: 1px solid #0d61f2;
+	margin: 50px;
+	padding: 8px;
+	width: 100%;
+}
+
+#header {
+	border: 2px solid #0d61f2;
+    color: #0d61f2;
+    padding: 8px;
+	font-weight: normal;
+}
+
+#myDynamicTable {
+	width: 50%;
+}
+
+#mydata {
+	position: relative;
+}
+
+.login-box {
+ position: absolute;
+  top: 50%;
+  left: 50%;
+  width:100%;
+  padding: 40px;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,.5);
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0,0,0,.6);
+  border-radius: 10px;
+}
+
+.login-box form a {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #03e9f4;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: .5s;
+  margin-top: 40px;
+  letter-spacing: 4px
+}
+
+.login-box a:hover {
+  background: #03e9f4;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #03e9f4,
+              0 0 25px #03e9f4,
+              0 0 50px #03e9f4,
+              0 0 100px #03e9f4;
+}
+
+.res {
+
+	/*padding-left: 300px; */
+	
+	position: relative;
+	text-align:left;
+}
+
